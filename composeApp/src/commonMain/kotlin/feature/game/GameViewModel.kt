@@ -5,13 +5,12 @@ import data.model.Grid
 import data.model.Pixel
 import data.model.Map
 import data.repository.PreferenceRepository
-import data.repository.PreferenceRepositoryEasy
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class GameViewModel(
-    private val preferenceRepository: PreferenceRepositoryEasy
+    private val preferenceRepository: PreferenceRepository
 ): ViewModel() {
 
     private val _state = MutableStateFlow(GameState())
