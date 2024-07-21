@@ -45,7 +45,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            //implementation(compose.preview)
+
+            api(libs.datastore.preferences)
+            api(libs.datastore)
 
             api(libs.koin.core)
             implementation(libs.koin.compose)
