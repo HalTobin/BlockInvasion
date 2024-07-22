@@ -61,7 +61,8 @@ class GameViewModel(
     private fun listenPreferences() {
         preferencesJob?.cancel()
         preferencesJob = viewModelScope.launch {
-            preferenceRepository.preferences.collect { _preference.update { it } }
+            preferenceRepository.preferences.collect { preferences ->
+                _preference.update { preferences } }
         }
     }
 

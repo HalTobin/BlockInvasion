@@ -28,13 +28,7 @@ class PreferenceRepositoryImpl(
         updateIntPreference(PrefKey.GRID_Y, value)
 
     override val preferences: Flow<AppPreferences>
-        get() = prefs.data.map { dataStore ->
-            AppPreferences(
-                pixelNumber = dataStore.getIntPreference(PrefKey.PIXEL_NUMBER, PrefDefault.PIXEL_NUMBER),
-                gridX = dataStore.getIntPreference(PrefKey.GRID_X, PrefDefault.GRID_X),
-                gridY = dataStore.getIntPreference(PrefKey.GRID_Y, PrefDefault.GRID_Y)
-            )
-        }
+        get() = prefs.appPreferences
 
     private suspend fun updateIntPreference(key: String, value: Int) {
         prefs.edit { dataStore ->
@@ -43,6 +37,14 @@ class PreferenceRepositoryImpl(
         }
     }
 
+}
+
+val DataStore<Preferences>.appPreferences get() = this.data.map { dataStore ->
+    AppPreferences(
+        pixelNumber = dataStore.getIntPreference(PrefKey.PIXEL_NUMBER, PrefDefault.PIXEL_NUMBER),
+        gridX = dataStore.getIntPreference(PrefKey.GRID_X, PrefDefault.GRID_X),
+        gridY = dataStore.getIntPreference(PrefKey.GRID_Y, PrefDefault.GRID_Y)
+    )
 }
 
 fun Preferences.getIntPreference(key: String, default: Int): Int {

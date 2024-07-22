@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import data.repository.AppPreferences
 import feature.game.GameScreen
 import feature.game.GameViewModel
 import feature.home.HomeScreen

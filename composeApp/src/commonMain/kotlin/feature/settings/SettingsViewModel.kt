@@ -41,7 +41,8 @@ class SettingsViewModel(
     private fun listenPreferences() {
         preferencesJob?.cancel()
         preferencesJob = viewModelScope.launch {
-            preferencesRepository.preferences.collect { _preference.update { it } }
+            preferencesRepository.preferences.collect { preferences ->
+                _preference.update { preferences } }
         }
     }
 
