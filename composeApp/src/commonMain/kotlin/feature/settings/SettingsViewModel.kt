@@ -1,39 +1,48 @@
 package feature.settings
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.chapeaumoineau.pixelinvasion.feature.settings.SettingsEvent
-import com.chapeaumoineau.pixelinvasion.feature.settings.SettingsState
+import data.repository.AppPreferences
 import data.repository.PreferenceRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val preferencesRepository: PreferenceRepository
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(SettingsState())
-    val state = _state.asStateFlow()
+    private val _preference = MutableStateFlow(AppPreferences())
+    val preferences = _preference.asStateFlow()
 
-    init {
-        refreshSettings()
-    }
+    private var preferencesJob: Job? = null
 
-    private fun refreshSettings() {
-        _state.update { it.copy(
-            pixelNumber = preferencesRepository.pixelNumber,
-            gridX = preferencesRepository.gridX,
-            gridY = preferencesRepository.gridY
-        ) }
-    }
+    init { listenPreferences() }
 
     fun onEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.ChangePixelNumber -> preferencesRepository.pixelNumber = event.value
-            is SettingsEvent.ChangeGriX -> preferencesRepository.gridX = event.value
-            is SettingsEvent.ChangeGridY -> preferencesRepository.gridY = event.value
+            is SettingsEvent.ChangePixelNumber -> viewModelScope.launch(Dispatchers.IO) {
+                preferencesRepository.setPixelNumber(event.value)
+            }
+            is SettingsEvent.ChangeGriX -> viewModelScope.launch(Dispatchers.IO) {
+                preferencesRepository.setGridX(event.value)
+            }
+            is SettingsEvent.ChangeGridY -> viewModelScope.launch(Dispatchers.IO) {
+                preferencesRepository.setGridY(event.value)
+            }
         }
-        refreshSettings()
+    }
+
+    private fun listenPreferences() {
+        preferencesJob?.cancel()
+        preferencesJob = viewModelScope.launch {
+            preferencesRepository.preferences.collect { _preference.update { it } }
+        }
     }
 
 }

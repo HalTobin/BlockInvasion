@@ -44,10 +44,10 @@ fun MainScreen() {
                 }
                 composable(Screen.Settings.route) {
                     val viewModel = koinViewModel<SettingsViewModel>()
-                    val state by viewModel.state.collectAsState()
+                    val preferences by viewModel.preferences.collectAsState()
                     SettingsScreen(
                         goBack = { navController.popBackStack() },
-                        state = state,
+                        preferences = preferences,
                         onEvent = viewModel::onEvent
                     )
                 }
