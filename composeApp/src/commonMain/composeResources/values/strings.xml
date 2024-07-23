@@ -1,6 +1,15 @@
 <resources>
+    <!-- Home Screen -->
     <string name="app_name">PixelInvasion</string>
     <string name="new_game">New game</string>
-    <string name="settings">Settings</string>
+
+    <!-- Game Screen -->
     <string name="wait_for_your_turn">Wait for your turn...</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Settings</string>
+    <string name="game_rules">Game rules</string>
+
+    <!-- General purpose -->
+    <string name="back_home_description">Navigate back to home screen</string>
 </resources>
