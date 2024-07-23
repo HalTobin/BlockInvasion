@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import data.value.PrefDefault
 import data.value.PrefKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class PreferenceRepositoryImpl(
@@ -26,6 +27,9 @@ class PreferenceRepositoryImpl(
 
     override suspend fun setGridY(value: Int) =
         updateIntPreference(PrefKey.GRID_Y, value)
+
+    override suspend fun getPreferences(): AppPreferences =
+        prefs.appPreferences.first()
 
     override val preferences: Flow<AppPreferences>
         get() = prefs.appPreferences
@@ -58,6 +62,7 @@ interface PreferenceRepository {
     suspend fun setGridY(value: Int)
     suspend fun setPixelNumber(value: Int)
 
+    suspend fun getPreferences(): AppPreferences
     val preferences: Flow<AppPreferences>
 }
 
