@@ -28,7 +28,7 @@ class GameViewModel(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             _preferences = preferenceRepository.getPreferences()
-            _state.update { it.copy(pixelNumber = _preferences.pixelNumber) }
+            _state.update { it.copy(pixelNumber = _preferences.nbColors) }
             when (_state.value.pixelNumber) {
                 4 -> _state.update { it.copy(pixelSet = Pixel.COLOR_SET_4.toTypedArray()) }
                 5 -> _state.update { it.copy(pixelSet = Pixel.COLOR_SET_5.toTypedArray()) }
@@ -36,7 +36,7 @@ class GameViewModel(
                 7 -> _state.update { it.copy(pixelSet = Pixel.COLOR_SET_7.toTypedArray()) }
             }
             val grid = Grid(_preferences.gridX, _preferences.gridY)
-            _state.update { it.copy(map = Map.generateMap(grid, _state.value.pixelNumber), player = _currentPlayer) }
+            _state.update { it.copy(map = Map.generateMap(grid, _preferences.nbColors), player = _currentPlayer) }
             _state.update { it.copy(playersPixels = _state.value.map.getPlayersPixel()) }
         }
     }

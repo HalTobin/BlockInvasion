@@ -14,13 +14,13 @@ class PreferenceRepositoryImpl(
     private val prefs: DataStore<Preferences>
 ): PreferenceRepository {
     override suspend fun reset() {
-        setPixelNumber(PrefDefault.PIXEL_NUMBER)
+        setNbColors(PrefDefault.NB_COLORS)
         setGridX(PrefDefault.GRID_X)
         setGridY(PrefDefault.GRID_Y)
     }
 
-    override suspend fun setPixelNumber(value: Int) =
-        updateIntPreference(PrefKey.PIXEL_NUMBER, value)
+    override suspend fun setNbColors(value: Int) =
+        updateIntPreference(PrefKey.NB_COLORS, value)
 
     override suspend fun setGridX(value: Int) =
         updateIntPreference(PrefKey.GRID_X, value)
@@ -45,7 +45,7 @@ class PreferenceRepositoryImpl(
 
 val DataStore<Preferences>.appPreferences get() = this.data.map { dataStore ->
     AppPreferences(
-        pixelNumber = dataStore.getIntPreference(PrefKey.PIXEL_NUMBER, PrefDefault.PIXEL_NUMBER),
+        nbColors = dataStore.getIntPreference(PrefKey.NB_COLORS, PrefDefault.NB_COLORS),
         gridX = dataStore.getIntPreference(PrefKey.GRID_X, PrefDefault.GRID_X),
         gridY = dataStore.getIntPreference(PrefKey.GRID_Y, PrefDefault.GRID_Y)
     )
@@ -60,14 +60,14 @@ interface PreferenceRepository {
     suspend fun reset()
     suspend fun setGridX(value: Int)
     suspend fun setGridY(value: Int)
-    suspend fun setPixelNumber(value: Int)
+    suspend fun setNbColors(value: Int)
 
     suspend fun getPreferences(): AppPreferences
     val preferences: Flow<AppPreferences>
 }
 
 data class AppPreferences(
-    val pixelNumber: Int = PrefDefault.PIXEL_NUMBER,
+    val nbColors: Int = PrefDefault.NB_COLORS,
     val gridX: Int = PrefDefault.GRID_X,
     val gridY: Int = PrefDefault.GRID_Y
 )

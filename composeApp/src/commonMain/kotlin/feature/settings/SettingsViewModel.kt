@@ -33,7 +33,7 @@ class SettingsViewModel(
     fun onEvent(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.ChangePixelNumber -> viewModelScope.launch(Dispatchers.IO) {
-                preferenceRepository.setPixelNumber(event.value)
+                preferenceRepository.setNbColors(event.value)
             }
             is SettingsEvent.ChangeGriX -> viewModelScope.launch(Dispatchers.IO) {
                 preferenceRepository.setGridX(event.value)

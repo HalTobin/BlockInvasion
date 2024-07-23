@@ -29,7 +29,7 @@ fun SettingsScreen(
             title = "Number of colors",
             min = 4,
             max = 7,
-            value = preferences.pixelNumber,
+            value = preferences.nbColors,
             onChange = { onEvent(SettingsEvent.ChangePixelNumber(it)) }
         )
         IntEntry(

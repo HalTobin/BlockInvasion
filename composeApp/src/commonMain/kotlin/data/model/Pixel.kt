@@ -8,10 +8,10 @@ sealed class Pixel(val color: Int) {
     object Alpha: Pixel(color = Color.Blue.toArgb())
     object Beta: Pixel(color = Color.Red.toArgb())
     object Gamma: Pixel(color = Color.Yellow.toArgb())
-    object Delta: Pixel(color = Color.Green.toArgb())
+    object Delta: Pixel(color = 0xFF00BF00.toInt())
     object Epsilon: Pixel(color = 0xFFFFA500.toInt())
     object Zeta: Pixel(color = Color.Cyan.toArgb())
-    object Theta: Pixel(color = Color.White.toArgb())
+    object Theta: Pixel(color = 0xFFA020F0.toInt())
 
     companion object {
         val COLOR_SET_4 = listOf(Alpha, Beta, Gamma, Delta)
@@ -32,7 +32,7 @@ sealed class Pixel(val color: Int) {
             }
         }
 
-        fun getRandomPixel(pixelNumber: Int): Pixel = getFromInt(Random.nextInt(1, pixelNumber))
+        fun getRandomPixel(nbColors: Int): Pixel = getFromInt(Random.nextInt(1, nbColors + 1))
     }
 
 }

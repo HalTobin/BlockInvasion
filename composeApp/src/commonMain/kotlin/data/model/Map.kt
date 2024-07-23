@@ -58,9 +58,8 @@ data class Map(
         }
     }
 
-    private fun isValidIndex(row: Int, col: Int): Boolean {
-        return row in 0 until map.size && col in 0 until map[0].size
-    }
+    private fun isValidIndex(row: Int, col: Int): Boolean =
+        row in map.indices && col in map[0].indices
 
     private fun getPlayerIndexes(player: Int): MapIndexes {
         val rowIndex: Int
@@ -91,8 +90,8 @@ data class Map(
     }
 
     companion object {
-        fun generateMap(grid: Grid, pixelNumber: Int): Map {
-            val newMap = Array(grid.x) { Array(grid.y) { Pixel.getRandomPixel(pixelNumber) } }
+        fun generateMap(grid: Grid, nbColors: Int): Map {
+            val newMap = Array(grid.x) { Array(grid.y) { Pixel.getRandomPixel(nbColors) } }
             return Map(newMap)
         }
 
