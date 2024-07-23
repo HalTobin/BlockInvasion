@@ -1,6 +1,7 @@
 package feature.settings
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -47,6 +48,7 @@ import data.repository.AppPreferences
 import data.value.Language
 import data.value.Theme
 import feature.settings.components.SelectionFromListDialog
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -89,7 +91,6 @@ fun SettingsScreen(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    //.fillMaxHeight()
                     .padding(4.dp)
                     .clip(CircleShape)
                     .background(it.color)
@@ -100,8 +101,15 @@ fun SettingsScreen(
         value = preferences.language.title,
         items = Language.list.map { Triple(
             it.key,
-            it.title,
-            null) },
+            it.title) {
+                Image(modifier = Modifier
+                    .size(40.dp)
+                    .padding(4.dp)
+                    .clip(CircleShape)
+                    .border(width = 2.dp, color = Color.Black, shape = CircleShape),
+                    painter = painterResource(it.flag),
+                    contentDescription = it.title)
+        } },
         onChange = { onEvent(SettingsEvent.ChangeLanguage(it)) })
 }
 
