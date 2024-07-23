@@ -2,7 +2,6 @@ package feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chapeaumoineau.pixelinvasion.feature.settings.SettingsEvent
 import data.repository.AppPreferences
 import data.repository.PreferenceRepository
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +39,12 @@ class SettingsViewModel(
             }
             is SettingsEvent.ChangeGridY -> viewModelScope.launch(Dispatchers.IO) {
                 preferenceRepository.setGridY(event.value)
+            }
+            is SettingsEvent.ChangeLanguage -> viewModelScope.launch(Dispatchers.IO) {
+                preferenceRepository.setLanguage(event.value)
+            }
+            is SettingsEvent.ChangeTheme -> viewModelScope.launch(Dispatchers.IO) {
+                preferenceRepository.setTheme(event.value)
             }
         }
     }
