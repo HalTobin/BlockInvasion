@@ -16,6 +16,7 @@ import data.repository.AppPreferences
 import feature.game.GameScreen
 import feature.game.GameViewModel
 import feature.home.HomeScreen
+import feature.home.HomeViewModel
 import feature.settings.SettingsScreen
 import feature.settings.SettingsViewModel
 import koinViewModel
@@ -34,7 +35,12 @@ fun MainScreen(
     ) {
         NavHost(navController = navController, startDestination = Screen.Home.route) {
             composable(Screen.Home.route) {
-                HomeScreen(goTo = { navController.navigate(it.route) })
+                val viewModel = koinViewModel<HomeViewModel>()
+                val state by viewModel.state.collectAsState()
+                HomeScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    goTo = { navController.navigate(it.route) })
             }
             composable(Screen.Game.route) {
                 val viewModel = koinViewModel<GameViewModel>()
@@ -42,16 +48,14 @@ fun MainScreen(
                 GameScreen(
                     goBack = { navController.popBackStack() },
                     state = state,
-                    onEvent = viewModel::onEvent
-                )
+                    onEvent = viewModel::onEvent)
             }
             composable(Screen.Settings.route) {
                 val viewModel = koinViewModel<SettingsViewModel>()
                 SettingsScreen(
                     goBack = { navController.popBackStack() },
                     preferences = preferences,
-                    onEvent = viewModel::onEvent
-                )
+                    onEvent = viewModel::onEvent)
             }
         }
     }
