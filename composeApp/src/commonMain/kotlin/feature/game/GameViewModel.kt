@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class GameViewModel(
-    preferenceRepository: PreferenceRepository
+    private val preferenceRepository: PreferenceRepository
 ): ViewModel() {
 
     private val _state = MutableStateFlow(GameState())
@@ -25,20 +25,20 @@ class GameViewModel(
     private var _currentPlayer = 0
     private lateinit var _preferences: AppPreferences
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            _preferences = preferenceRepository.getPreferences()
-            _state.update { it.copy(pixelNumber = _preferences.nbColors) }
-            when (_state.value.pixelNumber) {
-                4 -> _state.update { it.copy(pixelSet = Pixel.COLOR_SET_4.toTypedArray()) }
-                5 -> _state.update { it.copy(pixelSet = Pixel.COLOR_SET_5.toTypedArray()) }
-                6 -> _state.update { it.copy(pixelSet = Pixel.COLOR_SET_6.toTypedArray()) }
-                7 -> _state.update { it.copy(pixelSet = Pixel.COLOR_SET_7.toTypedArray()) }
-            }
-            val grid = Grid(_preferences.gridX, _preferences.gridY)
-            _state.update { it.copy(map = Map.generateMap(grid, _preferences.nbColors), player = _currentPlayer) }
-            _state.update { it.copy(playersPixels = _state.value.map.getPlayersPixel()) }
-        }
+    init { initGame() }
+
+    private fun initGame() = viewModelScope.launch(Dispatchers.IO) {
+        _preferences = preferenceRepository.getPreferences()
+        _state.update { it.copy(nbColors = _preferences.nbColors) }
+        _state.update { it.copy(pixelSet = when (_state.value.nbColors) {
+            4 -> Pixel.COLOR_SET_4.toTypedArray()
+            5 -> Pixel.COLOR_SET_5.toTypedArray()
+            6 -> Pixel.COLOR_SET_6.toTypedArray()
+            7 -> Pixel.COLOR_SET_7.toTypedArray()
+            else -> Pixel.COLOR_SET_4.toTypedArray() }) }
+        val grid = Grid(_preferences.gridX, _preferences.gridY)
+        _state.update { it.copy(map = Map.generateMap(grid, _preferences.nbColors), player = _currentPlayer) }
+        _state.update { it.copy(playersPixels = _state.value.map.getPlayersPixel(), pause = false) }
     }
 
     fun onEvent(event: GameEvent) {
@@ -55,6 +55,9 @@ class GameViewModel(
                     _state.update { it.copy(endGame = EndGame(player0, player1)) }
                 }
             }
+            is GameEvent.PauseGame -> { _state.update { it.copy(pause = true) } }
+            is GameEvent.Reset -> initGame()
+            is GameEvent.UnpauseGame -> { _state.update { it.copy(pause = false) } }
         }
     }
 

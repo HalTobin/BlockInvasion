@@ -5,6 +5,10 @@
 
     <!-- Game Screen -->
     <string name="wait_for_your_turn">Wait for your turn...</string>
+    <string name="game_pause">Game pause</string>
+    <string name="resume">Resume</string>
+    <string name="restart">Restart</string>
+    <string name="quit">Quit</string>
 
     <!-- Settings Screen -->
     <string name="settings">Settings</string>

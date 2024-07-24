@@ -8,10 +8,11 @@ data class GameState(
     val player: Int = 0,
     val map: Map = Map(),
     val grid: Grid = Grid(27, 46),
-    val pixelNumber: Int = 6,
+    val nbColors: Int = 6,
     val playersPixels: List<Pixel> = emptyList(),
     val endGame: EndGame? = null,
-    val pixelSet: Array<Pixel> = Pixel.COLOR_SET_6.toTypedArray()
+    val pixelSet: Array<Pixel> = Pixel.COLOR_SET_6.toTypedArray(),
+    val pause: Boolean = false
 ) {
     fun nextPlayer(): Int = if (player == 0) 1 else 0
 
@@ -21,10 +22,11 @@ data class GameState(
 
         other as GameState
 
+        if (pause != other.pause) return false
         if (player != other.player) return false
         if (map != other.map) return false
         if (grid != other.grid) return false
-        if (pixelNumber != other.pixelNumber) return false
+        if (nbColors != other.nbColors) return false
         if (playersPixels != other.playersPixels) return false
         if (endGame != other.endGame) return false
         if (!pixelSet.contentEquals(other.pixelSet)) return false
@@ -34,9 +36,10 @@ data class GameState(
 
     override fun hashCode(): Int {
         var result = player
+        result = 31 * result + pause.hashCode()
         result = 31 * result + map.hashCode()
         result = 31 * result + grid.hashCode()
-        result = 31 * result + pixelNumber
+        result = 31 * result + nbColors
         result = 31 * result + playersPixels.hashCode()
         result = 31 * result + (endGame?.hashCode() ?: 0)
         result = 31 * result + pixelSet.contentHashCode()

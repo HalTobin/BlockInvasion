@@ -47,6 +47,7 @@ fun MainScreen(
                 val state by viewModel.state.collectAsState()
                 GameScreen(
                     goBack = { navController.popBackStack() },
+                    goToSettings = { navController.navigate(Screen.Settings.route) },
                     state = state,
                     onEvent = viewModel::onEvent)
             }
