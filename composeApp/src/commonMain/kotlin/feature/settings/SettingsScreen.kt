@@ -83,7 +83,8 @@ fun SettingsScreen(
 
     SectionTitle(stringResource(Res.string.section_interface))
     ListEntry(title = stringResource(Res.string.theme),
-        value = stringResource(preferences.theme.title),
+        currentKey = preferences.theme.key,
+        currentText = stringResource(preferences.theme.title),
         items = Theme.list.map { Triple(
             it.key,
             stringResource(it.title)
@@ -98,7 +99,8 @@ fun SettingsScreen(
         onChange = { onEvent(SettingsEvent.ChangeTheme(it)) })
 
     ListEntry(title = stringResource(Res.string.language),
-        value = preferences.language.title,
+        currentKey = preferences.language.key,
+        currentText = preferences.language.title,
         items = Language.list.map { Triple(
             it.key,
             it.title) {
@@ -148,7 +150,8 @@ fun IntEntry(
 fun ListEntry(
     title: String,
     items: List<Triple<String, String, (@Composable () -> Unit)?>>, // Pair <key, title>
-    value: String,
+    currentKey: String,
+    currentText: String,
     onChange: (String) -> Unit
 ) {
     var dialogState by remember { mutableStateOf(false) }
@@ -156,7 +159,7 @@ fun ListEntry(
     if (dialogState) SelectionFromListDialog(
         title = title,
         items = items,
-        currentKey = value,
+        currentKey = currentKey,
         onSelect = {
             onChange(it)
             dialogState = false },
@@ -172,7 +175,7 @@ fun ListEntry(
     ) {
         Text(text = title,
             modifier = Modifier.weight(1f))
-        Text(text = value,
+        Text(text = currentText,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.SemiBold)
     }

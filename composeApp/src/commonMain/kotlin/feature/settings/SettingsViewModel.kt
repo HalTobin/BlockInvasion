@@ -16,19 +16,6 @@ class SettingsViewModel(
     private val preferenceRepository: PreferenceRepository
 ): ViewModel() {
 
-    private val _preferences = MutableStateFlow(AppPreferences())
-    val preferences = _preferences.asStateFlow()
-
-    private var preferenceJob: Job? = null
-
-    init {
-        preferenceJob?.cancel()
-        preferenceJob = viewModelScope.launch(Dispatchers.IO) {
-            preferenceRepository.preferences.collect { preferences ->
-                _preferences.update { preferences } }
-        }
-    }
-
     fun onEvent(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.ChangePixelNumber -> viewModelScope.launch(Dispatchers.IO) {

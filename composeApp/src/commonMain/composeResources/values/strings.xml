@@ -15,6 +15,7 @@
     <string name="section_interface">Interface</string>
     <string name="theme">Theme</string>
     <string name="theme_dark">Dark</string>
+    <string name="theme_dark_oled">Dark (OLED)</string>
     <string name="theme_light">Light</string>
     <string name="language">Language</string>
 

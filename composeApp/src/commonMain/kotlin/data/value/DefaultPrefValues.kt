@@ -7,6 +7,7 @@ import blockinvasion.composeapp.generated.resources.flag_es
 import blockinvasion.composeapp.generated.resources.flag_fr
 import blockinvasion.composeapp.generated.resources.flag_ru
 import blockinvasion.composeapp.generated.resources.theme_dark
+import blockinvasion.composeapp.generated.resources.theme_dark_oled
 import blockinvasion.composeapp.generated.resources.theme_light
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -25,7 +26,8 @@ object PrefDefault {
     const val GRID_Y = 46
 
     const val THEME_DARK = "dark"
-    const val THEME_LIGHT = "dark"
+    const val THEME_DARK_OLED = "dark_oled"
+    const val THEME_LIGHT = "light"
     const val THEME = THEME_DARK
 
     const val LANGUAGE_EN = "en"
@@ -37,9 +39,10 @@ object PrefDefault {
 
 enum class Theme(val color: Color, val key: String, val title: StringResource) {
     Dark(color = Color.DarkGray, key = PrefDefault.THEME_DARK, title = Res.string.theme_dark),
+    DarkOled(color = Color.Black, key = PrefDefault.THEME_DARK_OLED, title = Res.string.theme_dark_oled),
     Light(color = Color.White, key = PrefDefault.THEME_LIGHT, title = Res.string.theme_light);
     companion object {
-        val list = listOf(Dark, Light)
+        val list = listOf(Light, Dark, DarkOled)
     }
 }
 

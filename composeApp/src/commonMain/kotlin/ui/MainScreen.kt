@@ -18,51 +18,45 @@ import feature.game.GameViewModel
 import feature.home.HomeScreen
 import feature.settings.SettingsScreen
 import feature.settings.SettingsViewModel
+import koinViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.currentKoinScope
 import ui.theme.BlockInvasionTheme
 
 @Composable
-fun MainScreen() {
-    BlockInvasionTheme {
-        val navController = rememberNavController()
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            NavHost(navController = navController, startDestination = Screen.Home.route) {
-                composable(Screen.Home.route) {
-                    HomeScreen(goTo = { navController.navigate(it.route) })
-                }
-                composable(Screen.Game.route) {
-                    val viewModel = koinViewModel<GameViewModel>()
-                    val state by viewModel.state.collectAsState()
-                    GameScreen(
-                        goBack = { navController.popBackStack() },
-                        state = state,
-                        onEvent = viewModel::onEvent
-                    )
-                }
-                composable(Screen.Settings.route) {
-                    val viewModel = koinViewModel<SettingsViewModel>()
-                    val preferences by viewModel.preferences.collectAsState()
-                    SettingsScreen(
-                        goBack = { navController.popBackStack() },
-                        preferences = preferences,
-                        onEvent = viewModel::onEvent
-                    )
-                }
+fun MainScreen(
+    preferences: AppPreferences
+) {
+    val navController = rememberNavController()
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        NavHost(navController = navController, startDestination = Screen.Home.route) {
+            composable(Screen.Home.route) {
+                HomeScreen(goTo = { navController.navigate(it.route) })
+            }
+            composable(Screen.Game.route) {
+                val viewModel = koinViewModel<GameViewModel>()
+                val state by viewModel.state.collectAsState()
+                GameScreen(
+                    goBack = { navController.popBackStack() },
+                    state = state,
+                    onEvent = viewModel::onEvent
+                )
+            }
+            composable(Screen.Settings.route) {
+                val viewModel = koinViewModel<SettingsViewModel>()
+                SettingsScreen(
+                    goBack = { navController.popBackStack() },
+                    preferences = preferences,
+                    onEvent = viewModel::onEvent
+                )
             }
         }
     }
 }
 
-@Composable
-inline fun <reified T: ViewModel> koinViewModel(): T {
-    val scope = currentKoinScope()
-    return viewModel { scope.get<T>() }
-}
-
 @Preview
 @Composable
-fun MainScreenPreview() = BlockInvasionTheme { MainScreen() }
+fun MainScreenPreview() = BlockInvasionTheme { MainScreen(AppPreferences()) }

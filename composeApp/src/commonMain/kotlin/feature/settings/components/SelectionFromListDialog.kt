@@ -1,12 +1,10 @@
 package feature.settings.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,11 +19,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -61,7 +59,7 @@ fun SelectionFromListDialog(
                 itemsIndexed(items) { index, item ->
                     Column {
                         Row(modifier = Modifier.height(48.dp)
-                            .clickable { onSelect(item.second) },
+                            .clickable { onSelect(item.first) },
                             verticalAlignment = Alignment.CenterVertically) {
                             Spacer(modifier = Modifier.width(16.dp))
                             item.third?.let { content ->
@@ -69,8 +67,11 @@ fun SelectionFromListDialog(
                                 Spacer(Modifier.width(16.dp))
                             }
                             Text(text = item.second,
-                                modifier = Modifier.fillMaxWidth(),
-                                fontWeight = if (currentKey == item.first) FontWeight.SemiBold else FontWeight.Normal,)
+                                modifier = Modifier.weight(1f),
+                                fontWeight = if (currentKey == item.first) FontWeight.SemiBold else FontWeight.Normal)
+                            RadioButton(modifier = Modifier.padding(horizontal = 20.dp),
+                                selected = (currentKey == item.first),
+                                onClick = null)
                         }
                         if (items.lastIndex != index) HorizontalDivider(modifier = Modifier.fillMaxWidth())
                     }

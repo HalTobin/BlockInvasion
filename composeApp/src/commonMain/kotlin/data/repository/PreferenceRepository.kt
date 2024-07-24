@@ -72,6 +72,7 @@ val DataStore<Preferences>.appPreferences get() = this.data.map { dataStore ->
 fun String.toTheme(): Theme = when (this) {
     Theme.Dark.key -> Theme.Dark
     Theme.Light.key -> Theme.Light
+    Theme.DarkOled.key -> Theme.DarkOled
     else -> Theme.Dark
 }
 
