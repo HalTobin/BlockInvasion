@@ -31,7 +31,8 @@ fun MainScreen(
     val navController = rememberNavController()
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
     ) {
         NavHost(navController = navController, startDestination = Screen.Home.route) {
             composable(Screen.Home.route) {

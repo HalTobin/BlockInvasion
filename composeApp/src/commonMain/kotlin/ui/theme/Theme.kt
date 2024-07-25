@@ -8,26 +8,23 @@ import androidx.compose.ui.graphics.Color
 import data.value.Theme
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
+    primary = Green80,
+    onPrimary = GreenGrey80,
     surface = DarkSurface,
     onSurface = Color.White
 )
 
 private val DarkOledColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
+    primary = Green80,
+    onPrimary = GreenGrey80,
     background = Color.Black,
     surface = DarkSurface,
     onSurface = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Green40,
+    onPrimary = GreenGrey40,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

@@ -111,8 +111,11 @@ fun HomeScreenButton(
 ) = Button(modifier = Modifier.fillMaxWidth().height(48.dp),
     shape = RoundedCornerShape(4.dp),
     onClick = onClick) {
-    Icon(imageVector = icon, contentDescription = null)
+    Icon(imageVector = icon,
+        tint = MaterialTheme.colorScheme.onPrimary,
+        contentDescription = null)
     Text(modifier = Modifier.weight(1f),
+        color = MaterialTheme.colorScheme.onPrimary,
         style = MaterialTheme.typography.bodyLarge,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,

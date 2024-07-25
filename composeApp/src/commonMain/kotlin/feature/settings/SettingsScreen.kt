@@ -1,6 +1,5 @@
 package feature.settings
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,8 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,8 +38,8 @@ import blockinvasion.composeapp.generated.resources.language
 import blockinvasion.composeapp.generated.resources.nb_colors
 import blockinvasion.composeapp.generated.resources.nb_columns
 import blockinvasion.composeapp.generated.resources.nb_rows
-import blockinvasion.composeapp.generated.resources.settings
 import blockinvasion.composeapp.generated.resources.section_interface
+import blockinvasion.composeapp.generated.resources.settings
 import blockinvasion.composeapp.generated.resources.theme
 import data.repository.AppPreferences
 import data.value.Language
