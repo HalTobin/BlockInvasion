@@ -45,14 +45,18 @@ fun PlayerControls(
             .fillMaxSize()
             .padding(vertical = 16.dp)
             .then (
-                if (player == 0) Modifier.graphicsLayer { rotationZ = 180f }
+                if (player == 2) Modifier.graphicsLayer { rotationZ = 180f }
                 else Modifier
             ),
         contentAlignment = Alignment.Center
     ) {
-        Row(
-            Modifier.fillMaxWidth(),
+        Row(modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround) {
+            Text(modifier = Modifier.padding(start = 4.dp),
+                text = player.toString(),
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.ExtraBold)
             pixels.forEach { pixel ->
                 val isFree = !playerPixels.contains(pixel)
                 Box(modifier = Modifier.composed {

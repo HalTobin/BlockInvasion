@@ -8,11 +8,11 @@ data class Map(
         map.flatten().distinct().size == 2
 
     fun getPlayersPixel(): List<Pixel> {
-        val indexesPlayer0 = getPlayerIndexes(0)
-        val indexesPlayer1 = getPlayerIndexes(1)
-        val pixel0 = map[indexesPlayer0.rowIndex][indexesPlayer0.colIndex]
+        val indexesPlayer1 = getPlayerIndexes(0)
+        val indexesPlayer2 = getPlayerIndexes(1)
         val pixel1 = map[indexesPlayer1.rowIndex][indexesPlayer1.colIndex]
-        return listOf(pixel0, pixel1)
+        val pixel2 = map[indexesPlayer2.rowIndex][indexesPlayer2.colIndex]
+        return listOf(pixel1, pixel2)
     }
 
     fun getPlayerScore(player: Int): Int {

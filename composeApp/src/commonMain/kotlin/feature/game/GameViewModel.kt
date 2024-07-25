@@ -22,7 +22,7 @@ class GameViewModel(
     private val _state = MutableStateFlow(GameState())
     val state = _state.asStateFlow()
 
-    private var _currentPlayer = 0
+    private var _currentPlayer = 1
     private lateinit var _preferences: AppPreferences
 
     init { initGame() }
@@ -50,9 +50,9 @@ class GameViewModel(
                     _state.update { it.copy(playersPixels = _state.value.map.getPlayersPixel(), player = _currentPlayer) }
                 }
                 if (_state.value.map.isGameOver()) {
-                    val player0 = _state.value.map.getPlayerScore(0)
                     val player1 = _state.value.map.getPlayerScore(1)
-                    _state.update { it.copy(endGame = EndGame(player0, player1)) }
+                    val player2 = _state.value.map.getPlayerScore(2)
+                    _state.update { it.copy(endGame = EndGame(player1, player2)) }
                 }
             }
             is GameEvent.PauseGame -> { _state.update { it.copy(pause = true) } }

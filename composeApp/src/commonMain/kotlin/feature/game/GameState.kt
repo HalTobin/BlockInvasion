@@ -5,7 +5,7 @@ import data.model.Pixel
 import data.model.Map
 
 data class GameState(
-    val player: Int = 0,
+    val player: Int = 1,
     val map: Map = Map(),
     val grid: Grid = Grid(27, 46),
     val nbColors: Int = 6,
@@ -14,7 +14,7 @@ data class GameState(
     val pixelSet: Array<Pixel> = Pixel.COLOR_SET_6.toTypedArray(),
     val pause: Boolean = false
 ) {
-    fun nextPlayer(): Int = if (player == 0) 1 else 0
+    fun nextPlayer(): Int = if (player == 1) 2 else 1
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
