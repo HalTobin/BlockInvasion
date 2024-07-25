@@ -1,5 +1,11 @@
 package ui
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,7 +40,24 @@ fun MainScreen(
         color = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground
     ) {
-        NavHost(navController = navController, startDestination = Screen.Home.route) {
+        NavHost(
+            navController = navController,
+            startDestination = Screen.Home.route,
+            enterTransition = {
+                if (navController.currentDestination?.route == Screen.Game.route)
+                    slideInHorizontally(animationSpec = tween(700),
+                        initialOffsetX = { it })
+                else
+                    fadeIn(animationSpec = tween(700))
+            },
+            exitTransition = {
+                if (navController.currentDestination?.route == Screen.Game.route)
+                    slideOutHorizontally(animationSpec = tween(700),
+                        targetOffsetX = { -it })
+                else
+                    fadeOut(animationSpec = tween(700))
+            }
+        ) {
             composable(Screen.Home.route) {
                 val viewModel = koinViewModel<HomeViewModel>()
                 val state by viewModel.state.collectAsState()

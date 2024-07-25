@@ -59,13 +59,12 @@ fun HomeScreen(
     onEvent: (HomeEvent) -> Unit,
     goTo: (Screen) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     val screenSize = remember { mutableStateOf(Pair(-1, -1)) }
 
     var goToGame by remember { mutableStateOf(false) }
     val goToGameAnimationState by animateFloatAsState(
         targetValue = if (goToGame) 1f else 0f,
-        animationSpec = tween(1000),
+        animationSpec = tween(250),
         label = "",
         finishedListener = { if (goToGame) goTo(Screen.Game) })
 
