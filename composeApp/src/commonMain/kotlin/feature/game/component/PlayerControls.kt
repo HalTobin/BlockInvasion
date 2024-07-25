@@ -62,9 +62,16 @@ fun PlayerControls(
                 Box(modifier = Modifier.composed {
                     size(40.dp)
                         .clip(RoundedCornerShape(4.dp))
-                        .background(if (isFree) Color(pixel.color) else Color.LightGray)
+                        .background(Color(pixel.color))
                         .clickable(isCurrentPlayer && isFree) { onClick(pixel, player) }
-                })
+                }, contentAlignment = Alignment.Center) {
+                    Box(modifier = Modifier.composed {
+                        size(32.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(if (isFree) Color.Black.copy(alpha = 0.2f) else Color.LightGray)
+                            .clickable(isCurrentPlayer && isFree) { onClick(pixel, player) }
+                    })
+                }
             }
         }
         if (!isCurrentPlayer) Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f))) {
