@@ -1,5 +1,13 @@
 package feature.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,7 +15,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,8 +29,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,10 +41,12 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import blockinvasion.composeapp.generated.resources.Res
 import blockinvasion.composeapp.generated.resources.app_name
 import blockinvasion.composeapp.generated.resources.new_game
 import blockinvasion.composeapp.generated.resources.settings
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.Screen
@@ -44,7 +59,16 @@ fun HomeScreen(
     onEvent: (HomeEvent) -> Unit,
     goTo: (Screen) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val screenSize = remember { mutableStateOf(Pair(-1, -1)) }
+
+    var goToGame by remember { mutableStateOf(false) }
+    val goToGameAnimationState by animateFloatAsState(
+        targetValue = if (goToGame) 1f else 0f,
+        animationSpec = tween(1000),
+        label = "",
+        finishedListener = { if (goToGame) goTo(Screen.Game) })
+
     Layout(
         measurePolicy = { measurables, constraints ->
             // Use the max width and height from the constraints
@@ -80,21 +104,24 @@ fun HomeScreen(
                     GameMap(modifier = Modifier.fillMaxSize(),
                         map = state.map)
                     Box(Modifier.fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f)))
+                        .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f * (1f - goToGameAnimationState))))
                     Text(modifier = Modifier.padding(top = 32.dp).align(Alignment.TopCenter),
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 1f - goToGameAnimationState),
                         text = stringResource(Res.string.app_name).uppercase(),
                         style = MaterialTheme.typography.displayMedium,
                         fontWeight = FontWeight.ExtraBold)
                     Column(modifier = Modifier.padding(horizontal = 64.dp)
                         .widthIn(max = 384.dp)) {
-                        HomeScreenButton(
-                            text = stringResource(Res.string.new_game),
+                        HomeScreenButton(text = stringResource(Res.string.new_game),
                             icon = Icons.Default.Games,
-                            onClick = { goTo(Screen.Game) })
-                        Spacer(modifier = Modifier.height(24.dp))
-                        HomeScreenButton(
-                            text = stringResource(Res.string.settings),
+                            goToGame = goToGame,
+                            direction = Direction.Right,
+                            onClick = { goToGame = true })
+                        Spacer(modifier = Modifier.height(32.dp))
+                        HomeScreenButton(text = stringResource(Res.string.settings),
                             icon = Icons.Default.Settings,
+                            goToGame = goToGame,
+                            direction = Direction.Left,
                             onClick = { goTo(Screen.Settings) })
                     }
                 }
@@ -106,21 +133,33 @@ fun HomeScreen(
 @Composable
 fun HomeScreenButton(
     text: String,
+    goToGame: Boolean,
+    direction: Direction,
     icon: ImageVector,
     onClick: () -> Unit
-) = Button(modifier = Modifier.fillMaxWidth().height(48.dp),
-    shape = RoundedCornerShape(4.dp),
-    onClick = onClick) {
-    Icon(imageVector = icon,
-        tint = MaterialTheme.colorScheme.onPrimary,
-        contentDescription = null)
-    Text(modifier = Modifier.weight(1f),
-        color = MaterialTheme.colorScheme.onPrimary,
-        style = MaterialTheme.typography.bodyLarge,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
-        text = text.uppercase())
+) = AnimatedVisibility(!goToGame,
+    exit = slideOutHorizontally(
+        targetOffsetX = { when (direction) {
+                Direction.Left -> it
+                Direction.Right -> -it
+            } }) + fadeOut()) {
+    Button(modifier = Modifier.fillMaxWidth().height(64.dp),
+        shape = RoundedCornerShape(4.dp),
+        onClick = onClick) {
+        Icon(modifier = Modifier.size(32.dp),
+            imageVector = icon,
+            tint = MaterialTheme.colorScheme.onPrimary,
+            contentDescription = null)
+        Text(modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.onPrimary,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            text = text.uppercase())
+    }
 }
+
+enum class Direction { Left, Right }
 
 @Composable
 @Preview
