@@ -9,6 +9,10 @@
     <string name="resume">Resume</string>
     <string name="restart">Restart</string>
     <string name="quit">Quit</string>
+    <string name="you_win">You win!</string>
+    <string name="you_lose">You lose...</string>
+    <string name="your_score">Your score:</string>
+    <string name="pixels">%1$d pixels</string>
 
     <!-- Settings Screen -->
     <string name="settings">Settings</string>

@@ -48,6 +48,12 @@ data class GameState(
 }
 
 data class EndGame(
-    val player0Score: Int,
+    val player2Score: Int,
     val player1Score: Int
-)
+) {
+    private val gameTotalPixels = player1Score + player2Score
+    val isPlayer1Winner = player1Score > player2Score
+    val isPlayer2Winner = player2Score > player1Score
+    val player1Ratio = player1Score.toFloat() / gameTotalPixels.toFloat()
+    val player2Ratio = player2Score.toFloat() / gameTotalPixels.toFloat()
+}

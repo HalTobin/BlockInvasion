@@ -11,7 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -56,7 +55,10 @@ class GameViewModel(
                 }
             }
             is GameEvent.PauseGame -> { _state.update { it.copy(pause = true) } }
-            is GameEvent.Reset -> initGame()
+            is GameEvent.Reset -> {
+                initGame()
+                _state.update { it.copy(endGame = null) }
+            }
             is GameEvent.UnpauseGame -> { _state.update { it.copy(pause = false) } }
         }
     }
