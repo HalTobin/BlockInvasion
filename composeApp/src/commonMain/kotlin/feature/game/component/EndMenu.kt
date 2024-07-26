@@ -5,15 +5,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Games
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,9 +38,13 @@ import blockinvasion.composeapp.generated.resources.you_lose
 import blockinvasion.composeapp.generated.resources.you_win
 import blockinvasion.composeapp.generated.resources.your_score
 import feature.game.EndGame
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import ui.composable.Direction
 import ui.composable.GameButton
+import ui.theme.Green80
+import ui.theme.Red80
 
 @Composable
 fun EndMenu(
@@ -47,6 +57,7 @@ fun EndMenu(
         dismissOnClickOutside = false,
         usePlatformDefaultWidth = false),
     onDismissRequest = { }) {
+    val scope =  rememberCoroutineScope()
     var goToGame by remember { mutableStateOf(false) }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
         PlayerScore(modifier = Modifier
@@ -70,13 +81,12 @@ fun EndMenu(
                 text = stringResource(Res.string.restart),
                 onClick = {
                     goToGame = true
-                    restart()
-                },
+                    scope.launch { delay(300); restart() } },
                 direction = Direction.Right,
                 icon = Icons.Default.Games,
                 goToGame = goToGame)
         }
-        Spacer(Modifier.height(40.dp))
+        Spacer(Modifier.height(24.dp))
     }
 }
 
@@ -86,26 +96,37 @@ fun PlayerScore(
     won: Boolean,
     pixelCount: Int,
     ratio: Float
-) = Column(modifier.padding(32.dp),
-    horizontalAlignment = Alignment.CenterHorizontally) {
-    Text(modifier = Modifier.padding(top = 64.dp, bottom = 32.dp),
-        text = stringResource(
-        if (won) Res.string.you_win
-        else Res.string.you_lose),
-        style = MaterialTheme.typography.headlineLarge,
-        fontWeight = FontWeight.SemiBold)
-    Text(modifier = Modifier.padding(bottom = 16.dp),
-        text = stringResource(Res.string.your_score),
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.SemiBold)
-    Text(text = "${(ratio*100).toInt()}%",
-        fontWeight = FontWeight.ExtraBold,
-        style = MaterialTheme.typography.displayMedium,
-        color = getColorByScore(ratio))
-    Text(text = stringResource(Res.string.pixels, pixelCount).uppercase(),
-        fontWeight = FontWeight.ExtraBold,
-        style = MaterialTheme.typography.headlineSmall,
-        color = getColorByScore(ratio))
+) = Surface(
+    color = Color.Transparent,
+    contentColor = Color.White) {
+    Column(modifier.padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(modifier = Modifier.padding(top = 64.dp, bottom = 32.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            Icon(modifier = Modifier.size(32.dp),
+                imageVector = if (won) Icons.Default.Flag else Icons.Default.Close,
+                tint = if (won) Green80 else Red80,
+                contentDescription = null)
+            Text(modifier = Modifier.padding(start = 8.dp),
+                text = stringResource(
+                    if (won) Res.string.you_win
+                    else Res.string.you_lose),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.SemiBold)
+        }
+        Text(modifier = Modifier.padding(bottom = 16.dp),
+            text = stringResource(Res.string.your_score),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold)
+        Text(text = "${(ratio*100).toInt()}%",
+            fontWeight = FontWeight.ExtraBold,
+            style = MaterialTheme.typography.displayMedium,
+            color = getColorByScore(ratio))
+        Text(text = stringResource(Res.string.pixels, pixelCount).uppercase(),
+            fontWeight = FontWeight.ExtraBold,
+            style = MaterialTheme.typography.headlineSmall,
+            color = getColorByScore(ratio))
+    }
 }
 
 fun getColorByScore(score: Float): Color {
