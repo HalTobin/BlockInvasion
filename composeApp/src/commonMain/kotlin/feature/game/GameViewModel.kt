@@ -51,7 +51,7 @@ class GameViewModel(
                 if (_state.value.map.isGameOver()) {
                     val player1 = _state.value.map.getPlayerScore(1)
                     val player2 = _state.value.map.getPlayerScore(2)
-                    _state.update { it.copy(endGame = EndGame(player1, player2)) }
+                    _state.update { it.copy(endGame = EndGame(player1Score = player1, player2Score = player2)) }
                 }
             }
             is GameEvent.PauseGame -> { _state.update { it.copy(pause = true) } }
