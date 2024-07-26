@@ -18,9 +18,7 @@ class GameViewModel(
     private val preferenceRepository: PreferenceRepository
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(GameState(
-        endGame = EndGame(456, 734)
-    ))
+    private val _state = MutableStateFlow(GameState())
     val state = _state.asStateFlow()
 
     private var _currentPlayer = 1
