@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -26,6 +25,11 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.compose.material:material-ripple:1.7.0-alpha05") }
     }
     
     sourceSets {
@@ -69,8 +73,8 @@ android {
         applicationId = "org.chapeaumoineau.blockinvasion"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0b"
     }
     packaging {
         resources {
@@ -80,6 +84,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
