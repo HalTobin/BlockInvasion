@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +41,7 @@ import blockinvasion.composeapp.generated.resources.nb_columns
 import blockinvasion.composeapp.generated.resources.nb_rows
 import blockinvasion.composeapp.generated.resources.section_interface
 import blockinvasion.composeapp.generated.resources.settings
+import blockinvasion.composeapp.generated.resources.sound_on
 import blockinvasion.composeapp.generated.resources.theme
 import data.repository.AppPreferences
 import data.value.Language
@@ -79,6 +81,10 @@ fun SettingsScreen(
         onChange = { onEvent(SettingsEvent.ChangeGridY(it)) })
 
     SectionTitle(stringResource(Res.string.section_interface))
+    BooleanEntry(title = stringResource(Res.string.sound_on),
+        value = preferences.sound,
+        onChange = { onEvent(SettingsEvent.ChangeSoundOn(it)) })
+
     ListEntry(title = stringResource(Res.string.theme),
         currentKey = preferences.theme.key,
         currentText = stringResource(preferences.theme.title),
@@ -118,6 +124,23 @@ fun SectionTitle(title: String) = Text(text = title,
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.SemiBold,
     color = MaterialTheme.colorScheme.primary)
+
+@Composable
+fun BooleanEntry(
+    title: String,
+    value: Boolean,
+    onChange: (Boolean) -> Unit
+) = Row(
+    modifier = Modifier.fillMaxWidth().height(48.dp),
+    verticalAlignment = Alignment.CenterVertically
+) {
+    Text(text = title,
+        modifier = Modifier.padding(horizontal = 16.dp).weight(1f))
+    Switch(modifier = Modifier.padding(end = 16.dp),
+        checked = value,
+        onCheckedChange = { onChange(it) }
+    )
+}
 
 @Composable
 fun IntEntry(

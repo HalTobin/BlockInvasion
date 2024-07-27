@@ -21,6 +21,7 @@
     <string name="nb_rows">Number of rows</string>
     <string name="nb_columns">Number of columns</string>
     <string name="section_interface">Interface</string>
+    <string name="sound_on">Enable Sound</string>
     <string name="theme">Theme</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_dark_oled">Dark (OLED)</string>

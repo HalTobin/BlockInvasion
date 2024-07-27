@@ -27,6 +27,9 @@ class SettingsViewModel(
             is SettingsEvent.ChangeGridY -> viewModelScope.launch(Dispatchers.IO) {
                 preferenceRepository.setGridY(event.value)
             }
+            is SettingsEvent.ChangeSoundOn -> viewModelScope.launch(Dispatchers.IO) {
+                preferenceRepository.setSoundOnOff(event.value)
+            }
             is SettingsEvent.ChangeLanguage -> viewModelScope.launch(Dispatchers.IO) {
                 preferenceRepository.setLanguage(event.value)
             }

@@ -26,28 +26,30 @@ fun GameButton(
     direction: Direction,
     icon: ImageVector,
     onClick: () -> Unit
-) = AnimatedVisibility(
-    modifier = modifier,
-    visible = !goToGame,
-    exit = slideOutHorizontally(
-        targetOffsetX = { when (direction) {
-            Direction.Left -> -it
-            Direction.Right -> it
-        } }) + fadeOut()
 ) {
-    Button(modifier = Modifier.fillMaxWidth().height(64.dp),
-        shape = RoundedCornerShape(4.dp),
-        onClick = onClick) {
-        Icon(modifier = Modifier.size(32.dp),
-            imageVector = icon,
-            tint = MaterialTheme.colorScheme.onPrimary,
-            contentDescription = null)
-        Text(modifier = Modifier.weight(1f),
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            text = text.uppercase())
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = !goToGame,
+        exit = slideOutHorizontally(
+            targetOffsetX = { when (direction) {
+                Direction.Left -> -it
+                Direction.Right -> it
+            } }) + fadeOut()
+    ) {
+        Button(modifier = Modifier.fillMaxWidth().height(64.dp),
+            shape = RoundedCornerShape(4.dp),
+            onClick = onClick) {
+            Icon(modifier = Modifier.size(32.dp),
+                imageVector = icon,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = null)
+            Text(modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                text = text.uppercase())
+        }
     }
 }
 

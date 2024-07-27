@@ -18,6 +18,7 @@ import feature.game.component.PauseMenuAction
 import feature.game.component.PlayerControls
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.composable.GameMap
+import ui.composable.NavBackHandler
 import ui.theme.BlockInvasionTheme
 
 @Composable
@@ -27,7 +28,6 @@ fun GameScreen(
     state: GameState,
     onEvent: (GameEvent) -> Unit
 ) {
-
     state.endGame?.let { endGameData -> EndMenu(
         endGame = endGameData,
         quit = goBack,
@@ -42,6 +42,8 @@ fun GameScreen(
             PauseMenuAction.Quit -> goBack()
         } }
     )
+
+    NavBackHandler(true) { onEvent(if (state.pause) GameEvent.UnpauseGame else GameEvent.PauseGame) }
 
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
