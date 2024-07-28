@@ -29,6 +29,9 @@ import blockinvasion.composeapp.generated.resources.Res
 import blockinvasion.composeapp.generated.resources.wait_for_your_turn
 import data.model.Pixel
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
+import ui.audio.AppSound
+import ui.audio.SoundController
 
 @Composable
 fun PlayerControls(
@@ -39,6 +42,7 @@ fun PlayerControls(
     onClick: (Pixel, Int) -> Unit
 ) = Crossfade(modifier = Modifier.height(72.dp),
     targetState = (player == currentPlayer)) { isCurrentPlayer ->
+    val soundPlayer = koinInject<SoundController>()
     Box(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -63,7 +67,13 @@ fun PlayerControls(
                     size(40.dp)
                         .clip(RoundedCornerShape(4.dp))
                         .background(Color(pixel.color))
-                        .clickable(isCurrentPlayer && isFree) { onClick(pixel, player) }
+                        .clickable(isCurrentPlayer && isFree) {
+                            if (isFree) {
+                                soundPlayer.playSound(AppSound.ButtonFeedback)
+                                onClick(pixel, player)
+                            }
+                            else soundPlayer.playSound(AppSound.DeniedFeedback)
+                        }
                 }, contentAlignment = Alignment.Center) {
                     Box(modifier = Modifier.composed {
                         size(32.dp)

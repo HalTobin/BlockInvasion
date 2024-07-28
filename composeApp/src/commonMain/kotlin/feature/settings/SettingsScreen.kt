@@ -49,6 +49,9 @@ import data.value.Theme
 import feature.settings.components.SelectionFromListDialog
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
+import ui.audio.AppSound
+import ui.audio.SoundController
 
 @Composable
 fun SettingsScreen(
@@ -134,11 +137,14 @@ fun BooleanEntry(
     modifier = Modifier.fillMaxWidth().height(48.dp),
     verticalAlignment = Alignment.CenterVertically
 ) {
+    val soundPlayer = koinInject<SoundController>()
     Text(text = title,
         modifier = Modifier.padding(horizontal = 16.dp).weight(1f))
     Switch(modifier = Modifier.padding(end = 16.dp),
         checked = value,
-        onCheckedChange = { onChange(it) }
+        onCheckedChange = {
+            soundPlayer.playSound(AppSound.ButtonFeedback)
+            onChange(it) }
     )
 }
 
@@ -153,15 +159,22 @@ fun IntEntry(
     modifier = Modifier.fillMaxWidth().height(48.dp),
     verticalAlignment = Alignment.CenterVertically
 ) {
+    val soundPlayer = koinInject<SoundController>()
     Text(text = title,
         modifier = Modifier.padding(horizontal = 16.dp).weight(1f))
-    IconButton(onClick = { if (value > min) onChange(value - 1) }) {
+    IconButton(onClick = { if (value > min) {
+        soundPlayer.playSound(AppSound.ButtonFeedback)
+        onChange(value - 1)
+    } else soundPlayer.playSound(AppSound.DeniedFeedback)}) {
         Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = null)
     }
     Text(text = value.toString(),
         color = MaterialTheme.colorScheme.primary,
         fontWeight = FontWeight.SemiBold)
-    IconButton(onClick = { if (value < max) onChange(value + 1) }) {
+    IconButton(onClick = { if (value < max) {
+        soundPlayer.playSound(AppSound.ButtonFeedback)
+        onChange(value + 1)
+    } else soundPlayer.playSound(AppSound.DeniedFeedback)}) {
         Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
     }
 }
@@ -174,13 +187,15 @@ fun ListEntry(
     currentText: String,
     onChange: (String) -> Unit
 ) {
-    var dialogState by remember { mutableStateOf(false) }
+    val soundPlayer = koinInject<SoundController>()
 
+    var dialogState by remember { mutableStateOf(false) }
     if (dialogState) SelectionFromListDialog(
         title = title,
         items = items,
         currentKey = currentKey,
         onSelect = {
+            soundPlayer.playSound(AppSound.ButtonFeedback)
             onChange(it)
             dialogState = false },
         onDismiss = { dialogState = false }
@@ -188,7 +203,9 @@ fun ListEntry(
 
     Row(
         modifier = Modifier.fillMaxWidth()
-            .clickable { dialogState = true }
+            .clickable {
+                soundPlayer.playSound(AppSound.ButtonFeedback)
+                dialogState = true }
             .padding(horizontal = 16.dp)
             .height(48.dp),
         verticalAlignment = Alignment.CenterVertically

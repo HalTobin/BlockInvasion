@@ -17,6 +17,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.koin.compose.koinInject
+import ui.audio.AppSound
+import ui.audio.SoundController
 
 @Composable
 fun GameButton(
@@ -27,6 +30,7 @@ fun GameButton(
     icon: ImageVector,
     onClick: () -> Unit
 ) {
+    val soundPlayer = koinInject<SoundController>()
     AnimatedVisibility(
         modifier = modifier,
         visible = !goToGame,
@@ -38,7 +42,10 @@ fun GameButton(
     ) {
         Button(modifier = Modifier.fillMaxWidth().height(64.dp),
             shape = RoundedCornerShape(4.dp),
-            onClick = onClick) {
+            onClick = {
+                soundPlayer.playSound(AppSound.ButtonFeedback)
+                onClick()
+            }) {
             Icon(modifier = Modifier.size(32.dp),
                 imageVector = icon,
                 tint = MaterialTheme.colorScheme.onPrimary,

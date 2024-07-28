@@ -44,6 +44,7 @@ fun HomeScreen(
     onEvent: (HomeEvent) -> Unit,
     goTo: (Screen) -> Unit
 ) {
+
     val screenSize = remember { mutableStateOf(Pair(-1, -1)) }
 
     var goToGame by remember { mutableStateOf(false) }

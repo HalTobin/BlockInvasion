@@ -15,6 +15,7 @@ import ui.theme.BlockInvasionTheme
 fun App() = KoinContext {
     val mainViewModel = koinViewModel<MainViewModel>()
     val preferences by mainViewModel.preferences.collectAsState()
+
     BlockInvasionTheme(theme = preferences.theme) {
         MainScreen(preferences = preferences)
     }

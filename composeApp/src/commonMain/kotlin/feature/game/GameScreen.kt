@@ -48,8 +48,7 @@ fun GameScreen(
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        PlayerControls(
-            player = 2,
+        PlayerControls(player = 2,
             playerPixels = state.playersPixels,
             currentPlayer = state.player,
             pixels = state.pixelSet,
@@ -68,8 +67,7 @@ fun GameScreen(
 
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
 
-        PlayerControls(
-            player = 1,
+        PlayerControls(player = 1,
             playerPixels = state.playersPixels,
             currentPlayer = state.player,
             pixels = state.pixelSet,
