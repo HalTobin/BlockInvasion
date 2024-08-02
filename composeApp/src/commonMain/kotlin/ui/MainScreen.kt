@@ -22,10 +22,12 @@ import feature.home.HomeScreen
 import feature.home.HomeViewModel
 import feature.settings.SettingsScreen
 import feature.settings.SettingsViewModel
-import koinViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import ui.theme.BlockInvasionTheme
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun MainScreen(
     preferences: AppPreferences

@@ -11,6 +11,7 @@ import feature.home.HomeViewModel
 import feature.game.GameViewModel
 import feature.settings.SettingsViewModel
 import org.koin.compose.viewmodel.dsl.viewModelOf
+import org.koin.dsl.bind
 
 actual object Modules {
     actual val viewModels = module {
@@ -20,7 +21,7 @@ actual object Modules {
         viewModelOf(::SettingsViewModel)
     }
     actual val repositories = module {
-        single<PreferenceRepository> { PreferenceRepositoryImpl(createDatastore()) }
+        single { PreferenceRepositoryImpl(createDatastore()) }.bind<PreferenceRepository>()
     }
     actual val controllers = module {
         single<SoundController> { SoundController(get()) }
