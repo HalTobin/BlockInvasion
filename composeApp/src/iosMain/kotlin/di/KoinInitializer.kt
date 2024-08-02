@@ -5,7 +5,7 @@ import org.koin.core.context.startKoin
 actual class KoinInitializer {
     actual fun init() {
         startKoin {
-            modules(repositoriesModule, viewModelModule)
+            modules(Modules.repositories, Modules.controllers, Modules.viewModels)
         }
     }
 }

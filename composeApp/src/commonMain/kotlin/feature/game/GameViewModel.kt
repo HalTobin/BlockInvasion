@@ -28,6 +28,7 @@ class GameViewModel(
 
     private fun initGame() = viewModelScope.launch(Dispatchers.IO) {
         _preferences = preferenceRepository.getPreferences()
+        println(_preferences.toString())
         _state.update { it.copy(nbColors = _preferences.nbColors) }
         _state.update { it.copy(pixelSet = when (_state.value.nbColors) {
             4 -> Pixel.COLOR_SET_4.toTypedArray()

@@ -58,7 +58,9 @@ class PreferenceRepositoryImpl(
     private suspend fun updateIntPreference(key: String, value: Int) {
         prefs.edit { dataStore ->
             val dataStoreKey = intPreferencesKey(key)
+            println("update $key from ${dataStore[dataStoreKey]}, to $value")
             dataStore[dataStoreKey] = value
+            println("update $key is ${dataStore[dataStoreKey]}")
         }
     }
 
