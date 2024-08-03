@@ -33,6 +33,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import blockinvasion.composeapp.generated.resources.Res
+import blockinvasion.composeapp.generated.resources.about
+import blockinvasion.composeapp.generated.resources.about_credits
+import blockinvasion.composeapp.generated.resources.about_version
 import blockinvasion.composeapp.generated.resources.back_home_description
 import blockinvasion.composeapp.generated.resources.game_rules
 import blockinvasion.composeapp.generated.resources.language
@@ -46,6 +49,11 @@ import blockinvasion.composeapp.generated.resources.theme
 import data.repository.AppPreferences
 import data.value.Language
 import data.value.Theme
+import feature.settings.components.BooleanEntry
+import feature.settings.components.InfoEntry
+import feature.settings.components.IntEntry
+import feature.settings.components.ListEntry
+import feature.settings.components.SectionTitle
 import feature.settings.components.SelectionFromListDialog
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -119,101 +127,9 @@ fun SettingsScreen(
                     contentDescription = it.title)
         } },
         onChange = { onEvent(SettingsEvent.ChangeLanguage(it)) })
-}
 
-@Composable
-fun SectionTitle(title: String) = Text(text = title,
-    modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp),
-    style = MaterialTheme.typography.headlineSmall,
-    fontWeight = FontWeight.SemiBold,
-    color = MaterialTheme.colorScheme.primary)
+    SectionTitle(stringResource(Res.string.about))
+    InfoEntry(title = stringResource(Res.string.about_version), value = "v1.0.0")
+    InfoEntry(title = stringResource(Res.string.about_credits), value = "MoineauFactory")
 
-@Composable
-fun BooleanEntry(
-    title: String,
-    value: Boolean,
-    onChange: (Boolean) -> Unit
-) = Row(
-    modifier = Modifier.fillMaxWidth().height(48.dp),
-    verticalAlignment = Alignment.CenterVertically
-) {
-    val soundPlayer = koinInject<SoundController>()
-    Text(text = title,
-        modifier = Modifier.padding(horizontal = 16.dp).weight(1f))
-    Switch(modifier = Modifier.padding(end = 16.dp),
-        checked = value,
-        onCheckedChange = {
-            soundPlayer.playSound(AppSound.ButtonFeedback)
-            onChange(it) }
-    )
-}
-
-@Composable
-fun IntEntry(
-    title: String,
-    min: Int,
-    max: Int,
-    value: Int,
-    onChange: (Int) -> Unit
-) = Row(
-    modifier = Modifier.fillMaxWidth().height(48.dp),
-    verticalAlignment = Alignment.CenterVertically
-) {
-    val soundPlayer = koinInject<SoundController>()
-    Text(text = title,
-        modifier = Modifier.padding(horizontal = 16.dp).weight(1f))
-    IconButton(onClick = { if (value > min) {
-        soundPlayer.playSound(AppSound.ButtonFeedback)
-        onChange(value - 1)
-    } else soundPlayer.playSound(AppSound.DeniedFeedback)}) {
-        Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = null)
-    }
-    Text(text = value.toString(),
-        color = MaterialTheme.colorScheme.primary,
-        fontWeight = FontWeight.SemiBold)
-    IconButton(onClick = { if (value < max) {
-        soundPlayer.playSound(AppSound.ButtonFeedback)
-        onChange(value + 1)
-    } else soundPlayer.playSound(AppSound.DeniedFeedback)}) {
-        Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
-    }
-}
-
-@Composable
-fun ListEntry(
-    title: String,
-    items: List<Triple<String, String, (@Composable () -> Unit)?>>, // Pair <key, title>
-    currentKey: String,
-    currentText: String,
-    onChange: (String) -> Unit
-) {
-    val soundPlayer = koinInject<SoundController>()
-
-    var dialogState by remember { mutableStateOf(false) }
-    if (dialogState) SelectionFromListDialog(
-        title = title,
-        items = items,
-        currentKey = currentKey,
-        onSelect = {
-            soundPlayer.playSound(AppSound.ButtonFeedback)
-            onChange(it)
-            dialogState = false },
-        onDismiss = { dialogState = false }
-    )
-
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .clickable {
-                soundPlayer.playSound(AppSound.ButtonFeedback)
-                dialogState = true }
-            .padding(horizontal = 16.dp)
-            .height(48.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = title,
-            modifier = Modifier.weight(1f))
-        Text(text = currentText,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.SemiBold)
-    }
 }

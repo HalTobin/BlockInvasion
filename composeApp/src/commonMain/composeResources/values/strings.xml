@@ -27,6 +27,9 @@
     <string name="theme_dark_oled">Dark (OLED)</string>
     <string name="theme_light">Light</string>
     <string name="language">Language</string>
+    <string name="about">About the app</string>
+    <string name="about_version">Version</string>
+    <string name="about_credits">Credits, Dev</string>
 
     <!-- General purpose -->
     <string name="back_home_description">Navigate back to home screen</string>
