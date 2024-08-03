@@ -27,10 +27,10 @@ kotlin {
         }
     }
 
-    configurations.all {
+    /*configurations.all {
         resolutionStrategy {
             force("androidx.compose.material:material-ripple:1.7.0-alpha05") }
-    }
+    }*/
     
     sourceSets {
         androidMain.dependencies {
